@@ -1,93 +1,153 @@
 # RELAY — Trusted Resource Sharing Network
 
-RELAY is a working full-stack resource-sharing platform for institutions. It includes server-enforced eligibility, booking conflicts, owner approvals, lifecycle condition reports, incidents, fair waitlisting, dashboards, and audit history.
+### Connecting available resources with people who need them.
 
-## Prerequisites
+RELAY is a full-stack resource-sharing platform designed to help institutions manage shared resources through a transparent, structured, and accountable workflow.
 
-- Windows 10/11 PowerShell
-- Python 3.13 (SQLAlchemy 2.0.36 is pinned for Windows compatibility)
-- Node.js 20+ and npm
-- Git
+The platform brings resource discovery, eligibility verification, booking requests, owner approvals, waitlisting, condition reporting, and incident management into one centralized system.
 
-## Backend setup (PowerShell)
+Our mission is simple: **make resource sharing more accessible, efficient, fair, and trustworthy.**
 
-```powershell
-cd c:\Users\OM\OneDrive\RELAY
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r backend\requirements.txt
-cd backend
-python seed.py
-python app.py
-```
+---
 
-The API runs at `http://localhost:5000/api`. Seed is non-destructive: it does nothing if users already exist. To start with an isolated demo database, use a fresh `backend\relay.db`.
+## 🎯 The Problem
 
-## Frontend setup
+Many institutions have resources that remain underutilized while other people struggle to access the equipment, facilities, or materials they need.
 
-In a second PowerShell window:
+Traditional resource-sharing processes can lead to:
 
-```powershell
-cd c:\Users\OM\OneDrive\RELAY\frontend
-npm.cmd install
-npm.cmd run dev
-```
+- Unclear resource availability and booking conflicts.
+- Difficulty verifying whether a requester is eligible.
+- Manual approval processes and disorganized requests.
+- Limited visibility into resource condition and incidents.
+- Lack of accountability and traceability.
 
-Open `http://localhost:5173`.
+RELAY addresses these challenges by creating a centralized platform with clear workflows and server-enforced rules.
 
-## Tests and build
+---
 
-```powershell
-cd c:\Users\OM\OneDrive\RELAY\backend
-..\.venv\Scripts\python.exe -m pytest -q
+## 💡 How RELAY Works
 
-cd ..\frontend
-npm.cmd run build
-```
+RELAY follows a structured process that connects resource owners, people requesting resources, and administrators.
 
-## Demo accounts
+### 1. Resource Discovery
 
-All passwords are `Relay123!`.
+Users explore the resources available through the platform and identify what they need.
 
-| Role | Email |
+Resource information helps users understand what is available before submitting a request.
+
+### 2. Eligibility Verification
+
+When a user requests a resource, the backend checks the applicable eligibility rules.
+
+This helps ensure that access decisions follow defined requirements rather than relying entirely on manual verification.
+
+### 3. Booking Request
+
+Eligible users submit booking requests for the resources they need.
+
+RELAY applies server-side validation to help prevent conflicting reservations and maintain consistent booking records.
+
+### 4. Owner Approval
+
+Where approval is required, the resource owner can review the request and make an informed decision.
+
+This gives resource owners a clear role in managing access to their resources.
+
+### 5. Fair Waitlisting
+
+When a resource is unavailable, users can be managed through a waitlisting workflow.
+
+This helps organize demand and supports fairer access when resources become available.
+
+### 6. Resource Condition Reporting
+
+Condition reports help document the state of shared resources throughout their lifecycle.
+
+This supports better maintenance awareness and responsible use of shared assets.
+
+### 7. Incident Management
+
+Incidents related to shared resources can be recorded and tracked through the platform.
+
+This creates a structured way to handle issues and improve resource accountability.
+
+### 8. Dashboards and Audit History
+
+Dashboards provide a centralized view of platform activity, while audit history helps maintain traceability for important actions.
+
+Together, these features support more transparent and accountable resource management.
+
+---
+
+## 🔄 End-to-End Workflow
+
+**Discover → Verify Eligibility → Request → Validate → Approve → Manage → Track**
+
+1. A user discovers a resource they need.
+2. The platform checks eligibility and validates the booking request.
+3. The request proceeds through the applicable approval workflow.
+4. If the resource is unavailable, a waitlisting process can help manage demand.
+5. Resource condition and incidents can be documented.
+6. Dashboards and audit records support monitoring and accountability.
+
+The exact steps depend on the resource, eligibility requirements, and approval rules configured in the platform.
+
+---
+
+## ✨ Key Features
+
+- **Centralized Resource Management** — Organize resources in one platform.
+- **Server-Enforced Eligibility** — Validate access according to defined rules.
+- **Booking Conflict Prevention** — Apply backend checks to reduce conflicting reservations.
+- **Owner Approval Workflows** — Support controlled resource access.
+- **Fair Waitlisting** — Organize requests when demand exceeds availability.
+- **Condition Reports** — Track resource condition over time.
+- **Incident Tracking** — Record issues involving shared resources.
+- **Activity Dashboards** — Provide visibility into platform activity.
+- **Audit History** — Support traceability and accountability.
+
+---
+
+## 🛡️ Our Approach
+
+RELAY is built around five principles:
+
+- **Fairness:** Resource access follows defined eligibility and booking rules.
+- **Transparency:** Requests, approvals, and resource activity follow structured workflows.
+- **Accountability:** Audit history and incident records support traceability.
+- **Reliability:** Critical booking validations are enforced by the backend.
+- **Sustainability:** Better sharing can help institutions make greater use of existing resources.
+
+---
+
+## 🧰 Technology Stack
+
+| Component | Technology |
 |---|---|
-| Student with relevant training | student@relay.demo |
-| Student lacking training | untrained@relay.demo |
-| Owner | owner@relay.demo |
-| Administrator | admin@relay.demo |
+| Frontend | React |
+| Development and Build Tool | Vite |
+| Backend | Python and Flask |
+| Database | SQLite |
 
-Public registration always creates a student account. Owner and administrator roles must be provisioned by trusted administrators outside this public flow.
+The frontend provides the user interface, while the backend manages application logic, validation, and resource-related workflows.
 
-## Booking lifecycle
+---
 
-`pending` / `waitlisted` → `approved` → `checked_in` → `returned`; pending, waitlisted, or approved requests may become `cancelled`; pending or waitlisted requests may become `rejected`. Invalid transitions are rejected by the API. Waitlisted requests are deterministic FIFO by request creation time, then booking ID. A waitlisted booking is not an approval.
+## 🌱 Our Vision
 
-Approval is denied for an ineligible requester, an owner approving their own request, a time conflict with an approved/active booking, an unauthorized personnel member, or a configured usage limit. Current limits default to three active bookings per user and can be configured with `MAX_ACTIVE_BOOKINGS_PER_USER`.
+We envision a future where access to resources is not limited by disconnected processes or inefficient management.
 
-## API overview
+By bringing people, resources, and structured workflows together, RELAY aims to help institutions encourage collaboration, reduce unnecessary waste, and build a culture of responsible sharing.
 
-- Health: `GET /api/health`
-- Auth: register, login, logout, current user
-- Resources: discover, create, update, deactivate
-- Bookings: create, inspect, approve, reject, cancel, check in, return
-- Incidents: report, review, resolve
-- Dashboards: student, owner, administrator
-- Audit: administrator-only audit log
+---
 
-## Architecture
+## 👥 Project Information
 
-The Flask application factory (`backend/app.py`) initializes SQLAlchemy and Flask-Migrate. Domain models are separated under `backend/models`; HTTP routes under `backend/routes`; eligibility, allocation, audit, and booking logic under `backend/services`. The React application uses React Router, a central API client, cookie-based session authentication, role-aware routes, and a responsive shared shell.
+**Project Name:** RELAY — Trusted Resource Sharing Network  
+**Built for:** CodeHackIndia  
+**Repository:** [View RELAY on GitHub](https://github.com/infiniteloopers82-wq/RELAY)
 
-## Security and limitations
+---
 
-- Passwords are hashed using Werkzeug's secure password hashing.
-- Private routes require a server-side session; roles are read from the database, not supplied by the frontend.
-- CORS allows only configured origins. Keep `SECRET_KEY`, cookies, and HTTPS settings production-safe.
-- SQLite is suitable for local demonstration. Set `DATABASE_URL` to PostgreSQL for production and run migrations rather than relying only on `db.create_all`.
-- Incidents are recorded for human review; the system never automatically declares a person guilty of damage.
-- This demonstration uses an HTTP cookie session, which requires HTTPS and secure cookie configuration in production.
-- Image references are stored as strings; actual object/image storage is a deployment integration.
-
-## Environment
-
-Copy `.env.example` to `.env` as a template. Never commit real secrets or the demo database. Deployment must set a random `SECRET_KEY`, production `DATABASE_URL`, HTTPS origins, and `SESSION_COOKIE_SECURE=true`.
+*RELAY — Share responsibly. Access fairly. Build trust.*

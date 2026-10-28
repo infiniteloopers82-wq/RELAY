@@ -1,0 +1,1 @@
+export const dateTime=(v)=>v?new Date(v).toLocaleString([], {dateStyle:'medium',timeStyle:'short'}):'—';export const date=(v)=>v?new Date(v).toLocaleDateString([], {dateStyle:'medium'}):'—';export const statusClass=(s)=>`status status-${String(s||'').replace('_','-')}`;

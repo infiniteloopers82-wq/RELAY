@@ -1,4 +1,6 @@
-const BASE=(import.meta.env.VITE_API_BASE_URL||'http://127.0.0.1:5000/api').replace(/\/$/,'');
+
+const BASE = (import.meta.env.VITE_API_BASE_URL || 'https://relay-api-backend-2026.onrender.com/api').replace(/\/+$/, '');
+
 async function request(path, options = {}) {
   let res;
   try {

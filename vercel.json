@@ -4,6 +4,7 @@
   "services": {
     "backend": {
       "root": "backend",
+      "entrypoint": "app:app",
       "framework": "flask"
     },
     "frontend": {
